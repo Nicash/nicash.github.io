@@ -207,18 +207,35 @@
     <script>
       const bannerSuperior = document.querySelector(".iframe-overlay");
 
-      // Lista de imágenes del banner
-      const banners = ["overlay_header_1.png", "overlay_header_2.png"];
+      // Lista de imágenes del banner para DESKTOP
+      const bannersDesktop = ["overlay_header_1.png", "overlay_header_2.png"];
+      
+      // Lista de imágenes del banner para MÓVILES
+      const bannersMobile = ["overlay_mobile_1.png", "overlay_mobile_2.png"];
 
       let actual = 0;
 
       function cambiarBanner() {
+        // Detecta si es móvil (ancho menor a 992px)
+        const esMobile = window.innerWidth <= 992;
+        
+        // Usa el array correspondiente según el dispositivo
+        const banners = esMobile ? bannersMobile : bannersDesktop;
+        
         actual = (actual + 1) % banners.length;
         bannerSuperior.style.backgroundImage = `url(${banners[actual]})`;
       }
 
       // Cambiar cada 3 segundos (3000 ms)
       setInterval(cambiarBanner, 3000);
+      
+      // Actualizar al cambiar el tamaño de la ventana
+      window.addEventListener('resize', () => {
+        actual = 0; // Reinicia al cambiar de tamaño
+        const esMobile = window.innerWidth <= 992;
+        const banners = esMobile ? bannersMobile : bannersDesktop;
+        bannerSuperior.style.backgroundImage = `url(${banners[0]})`;
+      });
     </script>
   </body>
 </html>
