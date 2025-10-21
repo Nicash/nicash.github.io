@@ -110,8 +110,38 @@
         color: #ed1c24;
       }
 
+      /* Banner wrapper para móviles */
+      .banner-mobile-wrapper {
+        display: none;
+      }
+
       /* Adaptabilidad para móviles */
       @media (max-width: 992px) {
+        .banner-mobile-wrapper {
+          display: block;
+          background-color: #34b6ea;
+          min-height: 120px;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 100;
+        }
+
+        .banner-mobile-wrapper .iframe-overlay {
+          width: 100%;
+          height: 120px;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center center;
+          position: relative;
+          background-color: #34b6ea;
+        }
+
+        body {
+          padding-top: 120px;
+        }
+
         .layout {
           flex-direction: column;
           align-items: center;
@@ -127,17 +157,18 @@
         /* Contenedor del iframe */
         .iframe-container {
           max-width: 100%;
-          height: auto; /* 🔹 deja que crezca según el contenido */
-          overflow: visible; /* 🔹 permite scroll interno del iframe */
+          height: auto;
+          overflow: visible;
+          margin: 0;
         }
 
         iframe {
           width: 100%;
           min-height: 100vh; 
-          height: 1200px;
+          height: 1250px;
           border: none;
           display: block;
-          margin: 0;
+          margin: -100px 0 0 0;
           padding: 0;
         }
 
@@ -154,12 +185,51 @@
           background-repeat: no-repeat;
           z-index: 10;
         }
+
+        /* Oculta el overlay del contenedor principal en móviles */
+        .iframe-container > .iframe-overlay {
+          display: none;
+        }
       }
+
+      /* Resolución entre 940px y 992px */
+      @media (max-width: 992px) and (min-width: 940px) {
+        iframe {
+          margin: -55px 0 0 0;
+        }
+      }
+
+      /* Resolución entre 348px y 940px */
+      @media (max-width: 939px) and (min-width: 348px) {
+        iframe {
+          margin: -80px 0 0 0;
+        }
+      }
+
+      /* Resolución menor a 496px */
+      @media (max-width: 496px) {
+        iframe {
+          margin: -100px 0 0 0;
+        }
+      }
+
+      /* Resolución menor a 348px */
+      @media (max-width: 348px) {
+        iframe {
+          margin: -120px 0 0 0;
+        }
+      }
+
     </style>
   </head>
 
   <body>
     <!-- Contenido principal -->
+    <!-- Banner superior solo para móviles -->
+    <div class="banner-mobile-wrapper">
+      <div class="iframe-overlay"></div>
+    </div>
+
     <div class="layout">
       <aside>
         <img src="banner_vertical_1.png" alt="Publicidad izquierda" />
@@ -205,8 +275,6 @@
     </footer>
 
     <script>
-      const bannerSuperior = document.querySelector(".iframe-overlay");
-
       // Lista de imágenes del banner para DESKTOP
       const bannersDesktop = ["overlay_header_1.png", "overlay_header_2.png"];
       
@@ -215,15 +283,20 @@
 
       let actual = 0;
 
+      function getOverlay() {
+        if (window.innerWidth <= 992) {
+          return document.querySelector('.banner-mobile-wrapper .iframe-overlay');
+        } else {
+          return document.querySelector('.iframe-container > .iframe-overlay');
+        }
+      }
+
       function cambiarBanner() {
-        // Detecta si es móvil (ancho menor a 992px)
         const esMobile = window.innerWidth <= 992;
-        
-        // Usa el array correspondiente según el dispositivo
         const banners = esMobile ? bannersMobile : bannersDesktop;
-        
         actual = (actual + 1) % banners.length;
-        bannerSuperior.style.backgroundImage = `url(${banners[actual]})`;
+        const overlay = getOverlay();
+        if (overlay) overlay.style.backgroundImage = `url(${banners[actual]})`;
       }
 
       // Cambiar cada 3 segundos (3000 ms)
@@ -231,10 +304,19 @@
       
       // Actualizar al cambiar el tamaño de la ventana
       window.addEventListener('resize', () => {
-        actual = 0; // Reinicia al cambiar de tamaño
+        actual = 0;
         const esMobile = window.innerWidth <= 992;
         const banners = esMobile ? bannersMobile : bannersDesktop;
-        bannerSuperior.style.backgroundImage = `url(${banners[0]})`;
+        const overlay = getOverlay();
+        if (overlay) overlay.style.backgroundImage = `url(${banners[0]})`;
+      });
+
+      // Inicializar al cargar
+      window.addEventListener('DOMContentLoaded', () => {
+        const esMobile = window.innerWidth <= 992;
+        const banners = esMobile ? bannersMobile : bannersDesktop;
+        const overlay = getOverlay();
+        if (overlay) overlay.style.backgroundImage = `url(${banners[0]})`;
       });
     </script>
   </body>
