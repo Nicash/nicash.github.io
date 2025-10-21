@@ -29,7 +29,9 @@
         font-family: "Segoe UI", sans-serif;
         background-color: #34b6ea;
         color: #222;
-      } /* Estructura principal */
+      }
+
+      /* Estructura principal */
       .layout {
         display: flex;
         justify-content: space-between;
@@ -42,7 +44,6 @@
       aside {
         flex: 1;
         min-width: 180px;
-        max-width: 300px;
         position: sticky;
         top: 10px;
         align-self: flex-start;
@@ -51,7 +52,9 @@
         width: 100%;
         display: block;
         border-radius: 0;
-      } /* Contenedor del padrón */
+      }
+
+      /* Contenedor del padrón */
       .iframe-container {
         position: relative;
         width: 100%;
@@ -87,27 +90,6 @@
         text-align: center;
         font-size: 1em;
         padding: 16px 0;
-      }
-      .footer-content {
-        max-width: 980px;
-        margin: 0 auto;
-      }
-      .footer-title {
-        font-weight: bold;
-      }
-      .footer-icons {
-        display: flex;
-        justify-content: flex-end;
-        gap: 16px;
-        margin-top: 8px;
-      }
-      .footer-icons a {
-        color: white;
-        text-decoration: none;
-        font-size: 1.5em;
-      }
-      .footer-icons a:hover {
-        color: #ed1c24;
       }
 
       /* Banner wrapper para móviles */
@@ -164,12 +146,11 @@
 
         iframe {
           width: 100%;
-          min-height: 100vh; 
-          height: 1250px;
+          min-height: 100vh;
           border: none;
           display: block;
-          margin: -100px 0 0 0;
           padding: 0;
+          margin: -80px 0 0 0;
         }
 
         /* Overlay adaptable */
@@ -195,31 +176,70 @@
       /* Resolución entre 940px y 992px */
       @media (max-width: 992px) and (min-width: 940px) {
         iframe {
-          margin: -55px 0 0 0;
+          margin: -60px 0 0 0;
+          height: 900px;
         }
       }
 
-      /* Resolución entre 348px y 940px */
-      @media (max-width: 939px) and (min-width: 348px) {
+      /* Resolución entre 768px y 939px */
+      @media (max-width: 939px) and (min-width: 768px) {
         iframe {
           margin: -80px 0 0 0;
+          height: 900px;
         }
       }
 
-      /* Resolución menor a 496px */
-      @media (max-width: 496px) {
+      /* Resolución entre 496px y 767px */
+      @media (max-width: 767px) and (min-width: 496px) {
+        iframe {
+          margin: -80px 0 0 0;
+          height: 1200px;
+        }
+      }
+
+      /* Resolución entre 448px y 495px */
+      @media (max-width: 495px) and (min-width: 448px) {
         iframe {
           margin: -100px 0 0 0;
+          height: 1220px;
         }
       }
-
-      /* Resolución menor a 348px */
-      @media (max-width: 348px) {
+      /* Resolución entre 348px y 447px */
+      @media (max-width: 447px) and (min-width: 348px) {
+        iframe {
+          margin: -100px 0 0 0;
+          height: 1300px;
+        }
+      }
+      /* Resolución entre 308px y 347px */
+      @media (max-width: 347px) and (min-width: 308px) {
         iframe {
           margin: -120px 0 0 0;
+          height: 1350px;
+        }
+      }
+      /* Resolución entre 264px y 307px */
+      @media (max-width: 307px) and (min-width: 264px) {
+        iframe {
+          margin: -130px 0 0 0;
+          height: 1450px;
+        }
+      }
+      /* Resolución entre 244px y 263px */
+      @media (max-width: 263px) and (min-width: 244px) {
+        iframe {
+          margin: -140px 0 0 0;
+          height: 1500px;
         }
       }
 
+      /* Resolución menor a 244px */
+      @media (max-width: 243px) {
+        iframe {
+          margin: -150px 0 0 0;
+          height: 1550px;
+        }
+      }
     </style>
   </head>
 
@@ -277,7 +297,7 @@
     <script>
       // Lista de imágenes del banner para DESKTOP
       const bannersDesktop = ["overlay_header_1.png", "overlay_header_2.png"];
-      
+
       // Lista de imágenes del banner para MÓVILES
       const bannersMobile = ["overlay_mobile_1.png", "overlay_mobile_2.png"];
 
@@ -285,9 +305,11 @@
 
       function getOverlay() {
         if (window.innerWidth <= 992) {
-          return document.querySelector('.banner-mobile-wrapper .iframe-overlay');
+          return document.querySelector(
+            ".banner-mobile-wrapper .iframe-overlay"
+          );
         } else {
-          return document.querySelector('.iframe-container > .iframe-overlay');
+          return document.querySelector(".iframe-container > .iframe-overlay");
         }
       }
 
@@ -301,9 +323,9 @@
 
       // Cambiar cada 3 segundos (3000 ms)
       setInterval(cambiarBanner, 3000);
-      
+
       // Actualizar al cambiar el tamaño de la ventana
-      window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         actual = 0;
         const esMobile = window.innerWidth <= 992;
         const banners = esMobile ? bannersMobile : bannersDesktop;
@@ -312,7 +334,7 @@
       });
 
       // Inicializar al cargar
-      window.addEventListener('DOMContentLoaded', () => {
+      window.addEventListener("DOMContentLoaded", () => {
         const esMobile = window.innerWidth <= 992;
         const banners = esMobile ? bannersMobile : bannersDesktop;
         const overlay = getOverlay();
